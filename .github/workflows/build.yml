@@ -1,0 +1,50 @@
+name: Build Python Executables
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12.5
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build Windows exe
+        run: pyinstaller --onefile hello.py
+
+      - name: Upload Windows exe
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-windows-exe
+          path: dist/hello.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12.5
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build macOS executable
+        run: pyinstaller --onefile hello.py
+
+      - name: Upload macOS executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-macos-app
+          path: dist/hello
